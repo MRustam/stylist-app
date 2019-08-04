@@ -1,0 +1,52 @@
+server:
+  port: 8080
+  servlet:
+      session:
+        timeout: 400s
+  error:
+    whitelabel:
+      enabled: false
+
+spring:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL93Dialect
+        show_sql: true
+        use_sql_comments: true
+        format_sql: true
+        current_session_context_class: thread
+        jdbc:
+          lob:
+            non_contextual_creation: true
+  mail:
+    test-connection: true
+    host: smtp.yandex.ru
+    port: 465
+    username: travolta.JoTravolta@yandex.ru
+    password: 25802580
+    protocol: smtps
+    stylist:
+      email: "evsianna@gmail.com"
+    siteUrl: "www.qwe.com"
+    debug: true
+
+#  h2:
+#    console:
+#      enabled: true
+
+#  datasource:
+#    initialization-mode: always
+#    driverClassName: org.h2.Driver
+#    url: jdbc:h2:mem:stylist_db
+
+  datasource:
+    initialization-mode: always
+    platform: postges
+    username: stylist_admin
+    password: 123qwe
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/stylist_db
