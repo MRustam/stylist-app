@@ -1,7 +1,7 @@
 package live.evsianna.stylist.controller;
 
-import live.evsianna.stylist.controller.model.UserOrderDTO;
-import live.evsianna.stylist.controller.model.UsersRequestDTO;
+import live.evsianna.stylist.model.User;
+import live.evsianna.stylist.model.dto.UserOrderDTO;
 import live.evsianna.stylist.model.projection.UserProjection;
 import live.evsianna.stylist.service.interfaces.IUserService;
 import org.jetbrains.annotations.NotNull;
@@ -10,9 +10,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
@@ -24,14 +28,36 @@ public class UserController {
     @Autowired
     private IUserService iUserService;
 
-    @PostMapping(value = "/all", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public Page<UserProjection> findAll(@RequestBody @NotNull final UsersRequestDTO dto) {
-        return iUserService.findAll(dto);
+    @GetMapping(value = "/all")
+    public Page<UserProjection> findAllEnabledAsPage(
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "20") int size) {
+        return iUserService.findAll(true, page, size);
     }
 
-    @PostMapping(value = "/save", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UserOrderDTO> save(@RequestBody @NotNull @Valid final UserOrderDTO dto) {
-        return new ResponseEntity<>(iUserService.saveUserAndOrder(dto), HttpStatus.CREATED);
+    @GetMapping(value = "/by-id/{id}",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public UserProjection findById(@PathVariable final String id) {
+        return iUserService.findProjectionById(id);
+    }
+
+    @PatchMapping(value = "/enabled/{id}/{enabled}")
+    public void setEnabledById(@PathVariable final String id,
+                               @PathVariable boolean enabled) {
+        iUserService.setIsEnabledById(enabled, id);
+    }
+
+    @PostMapping(value = "/save/simple", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity saveNewUser(@RequestBody @NotNull @Valid final User user) {
+        iUserService.saveSimple(user);
+        return new ResponseEntity(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/save",
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<UserOrderDTO> saveNewUserWithOrder(@RequestBody @NotNull @Valid final UserOrderDTO dto) {
+        return new ResponseEntity<>(iUserService.saveNewUserWithOrder(dto), HttpStatus.CREATED);
     }
 
 }

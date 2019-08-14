@@ -11,8 +11,8 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import live.evsianna.stylist.controller.model.UserOrderDTO
-import live.evsianna.stylist.controller.model.UsersRequestDTO
+import live.evsianna.stylist.model.dto.UserOrderDTO
+
 import live.evsianna.stylist.service.interfaces.IUserService
 
 import static org.mockito.ArgumentMatchers.any
@@ -22,7 +22,6 @@ import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
-import static live.evsianna.stylist.utils.UserTestUtils.getUserRequestDTO
 
 /**
  * @author Rustam Mamedov
@@ -57,7 +56,7 @@ class UserServiceMockTest {
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
-        verify(userService, times(1)).saveUserAndOrder(any(UserOrderDTO.class))
+        verify(userService, times(1)).saveNewUserWithOrder(any(UserOrderDTO.class))
         verifyNoMoreInteractions(userService)
     }
 
@@ -72,7 +71,7 @@ class UserServiceMockTest {
                 .content(mapper.writeValueAsString(request))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
-        verify(userService, times(1)).findAll(any(UsersRequestDTO.class))
+        verify(userService, times(1)).findAll(any(PageRequestDTO.class))
         verifyNoMoreInteractions(userService)
     }
 }

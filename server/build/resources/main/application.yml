@@ -1,11 +1,16 @@
 server:
   port: 8080
+  servlet:
+      session:
+        timeout: 400s
+  error:
+    whitelabel:
+      enabled: false
 
 spring:
-  data.rest.base-path: /api/resource
 
   jpa:
-    generate-ddl: true
+    open-in-view: false
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -18,8 +23,6 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-    open-in-view: false
-
   mail:
     test-connection: true
     host: smtp.yandex.ru
@@ -31,6 +34,15 @@ spring:
       email: "evsianna@gmail.com"
     siteUrl: "www.qwe.com"
     debug: true
+
+#  h2:
+#    console:
+#      enabled: true
+
+#  datasource:
+#    initialization-mode: always
+#    driverClassName: org.h2.Driver
+#    url: jdbc:h2:mem:stylist_db
 
   datasource:
     initialization-mode: always

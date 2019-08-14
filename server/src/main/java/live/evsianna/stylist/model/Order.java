@@ -1,6 +1,6 @@
 package live.evsianna.stylist.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -28,13 +28,13 @@ import java.time.LocalDateTime;
 @Table(name = "order_tab")
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "message"})
+@EqualsAndHashCode(of = {"title", "message"})
 public class Order {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "uuid2")
     private String id;
 
     @Size(min = 5, max = 200, message = "Название услуги должно быть не меньше 5 и не больше 100 символов.")
@@ -52,18 +52,17 @@ public class Order {
     private User user;
 
     @Column(name = "created")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMMM-yyyy HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime created;
 
     @Column(name = "updated")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMMM-yyyy HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime updated;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Version
+    @JsonIgnore
     private int version;
 
     @Builder

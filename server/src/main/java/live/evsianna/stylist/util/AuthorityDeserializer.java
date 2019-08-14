@@ -1,4 +1,4 @@
-package live.evsianna.stylist.utils;
+package live.evsianna.stylist.util;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
@@ -17,7 +17,7 @@ import java.util.List;
  * @author Rustam Mamedov
  */
 
-public class CustomAuthorityDeserializer extends JsonDeserializer {
+public class AuthorityDeserializer extends JsonDeserializer {
 
     @Override
     public Object deserialize(JsonParser jp, DeserializationContext context) throws IOException {

@@ -5,7 +5,6 @@ import live.evsianna.stylist.model.projection.UserProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -13,9 +12,10 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
-    Optional<User> findByEmail(final String email);
+    Page<UserProjection> findAllByEnabledOrderByCreatedDesc(boolean enabled, final Pageable pageable);
 
-    @Query("SELECT u FROM User u")
-    Page<UserProjection> findAllUsers(final Pageable pageable);
+    Optional<UserProjection> findUserById(final String id);
+
+    Optional<User> findByEmail(final String email);
 
 }

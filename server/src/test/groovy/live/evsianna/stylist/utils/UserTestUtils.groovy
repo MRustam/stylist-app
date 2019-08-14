@@ -1,7 +1,8 @@
 package live.evsianna.stylist.utils
 
-import live.evsianna.stylist.controller.model.UserOrderDTO
-import live.evsianna.stylist.controller.model.UsersRequestDTO
+import live.evsianna.stylist.model.dto.UserDTO
+import live.evsianna.stylist.model.dto.UserOrderDTO
+
 import live.evsianna.stylist.model.Order
 import live.evsianna.stylist.model.User
 
@@ -11,22 +12,28 @@ import live.evsianna.stylist.model.User
 
 class UserTestUtils {
 
-    static UsersRequestDTO getUserRequestDTO(def page, def size) {
-        new UsersRequestDTO(page, size)
+    static UserDTO getUserDTO() {
+        UserDTO.builder()
+                .firstName("User-111_first_name")
+                .lastName("User-111_last_name")
+                .email("user111@gmail.com")
+                .phone("+17(800)100-10-10")
+                .age(130)
+                .build()
     }
 
     static UserOrderDTO getUserOrderDTO() {
         def user = User.builder()
-                .firstName("User-1_first_name")
-                .lastName("User-1_last_name")
-                .email("user1@gmail.com")
-                .phone("+7(800)100-10-10")
-                .age(30)
+                .firstName("User-111_first_name")
+                .lastName("User-111_last_name")
+                .email("user111@gmail.com")
+                .phone("+17(800)100-10-10")
+                .age(130)
                 .build()
 
         def order = Order.builder()
                 .title("bay course")
-                .message("Hello Anna! I wonna by your course.")
+                .message("Hello! I wonna by.")
                 .user(user)
                 .build()
 

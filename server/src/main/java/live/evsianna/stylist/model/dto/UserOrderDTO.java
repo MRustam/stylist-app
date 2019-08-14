@@ -1,4 +1,4 @@
-package live.evsianna.stylist.controller.model;
+package live.evsianna.stylist.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -23,7 +23,7 @@ public class UserOrderDTO {
 
     @JsonCreator
     public UserOrderDTO(@Valid @JsonProperty("user") User user,
-                        @Valid @JsonProperty("order")  Order order) {
+                        @Valid @JsonProperty("order") Order order) {
         this.user = user;
         this.order = order;
     }

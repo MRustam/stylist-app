@@ -11,7 +11,7 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import live.evsianna.stylist.controller.model.UserOrderDTO
+import live.evsianna.stylist.model.dto.UserOrderDTO
 import live.evsianna.stylist.repository.UserRepository
 import live.evsianna.stylist.service.interfaces.IOrderService
 import live.evsianna.stylist.service.AppMailService

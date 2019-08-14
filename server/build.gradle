@@ -1,3 +1,16 @@
+
+buildscript {
+	ext {
+		springBootVersion = '2.1.6.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+	}
+}
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.1.6.RELEASE'
@@ -23,22 +36,33 @@ repositories {
 	mavenCentral()
 }
 
+bootJar {
+	mainClassName = 'live.evsianna.stylist.StylistServiceApplication'
+}
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+	implementation 'io.jsonwebtoken:jjwt:0.9.0'
+
 	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'org.postgresql:postgresql'
-	
 	annotationProcessor 'org.projectlombok:lombok'
+	
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+	runtimeOnly 'org.postgresql:postgresql'
+
 	implementation 'org.apache.commons:commons-text:1.6'
 	compile 'org.jetbrains:annotations:16.0.2'
-	
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
+	testImplementation 'com.h2database:h2'
+	testImplementation('org.springframework.boot:spring-boot-starter-test')
+	testImplementation('org.springframework.security:spring-security-test')
+}
+
+test {
+	useJUnitPlatform()
 }

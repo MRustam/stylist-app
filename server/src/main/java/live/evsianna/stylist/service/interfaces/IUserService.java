@@ -1,22 +1,30 @@
 package live.evsianna.stylist.service.interfaces;
 
-import live.evsianna.stylist.controller.model.UserOrderDTO;
-import live.evsianna.stylist.controller.model.UsersRequestDTO;
 import live.evsianna.stylist.model.User;
+import live.evsianna.stylist.model.dto.UserDTO;
+import live.evsianna.stylist.model.dto.UserOrderDTO;
 import live.evsianna.stylist.model.projection.UserProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface IUserService extends UserDetailsService {
 
-    Page<UserProjection> findAll(final UsersRequestDTO request);
+    Page<UserProjection> findAll(boolean enabled, int page, int size);
+
+    UserProjection findProjectionById(final String id);
 
     User findById(final String id);
 
-    UserOrderDTO saveUserAndOrder(final UserOrderDTO dto);
+    UserOrderDTO saveNewUserWithOrder(final UserOrderDTO dto);
+
+    void saveSimple(final User user);
+
+    User save(final User user);
 
     void deleteById(final String id);
 
-    User update(final User user);
+    void setIsEnabledById(boolean enabled, final String id);
+
+    UserDTO update(final UserDTO user);
 
 }

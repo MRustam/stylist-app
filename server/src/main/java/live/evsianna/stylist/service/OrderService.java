@@ -1,12 +1,13 @@
 package live.evsianna.stylist.service;
 
-import live.evsianna.stylist.controller.model.UsersRequestDTO;
+import live.evsianna.stylist.model.Order;
+import live.evsianna.stylist.model.projection.OrderProjection;
 import live.evsianna.stylist.repository.OrderRepository;
 import live.evsianna.stylist.service.interfaces.IOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
-import live.evsianna.stylist.model.Order;
 
 @Service
 public class OrderService implements IOrderService {
@@ -19,8 +20,9 @@ public class OrderService implements IOrderService {
     }
 
     @Override
-    public Page<Order> findAll(final UsersRequestDTO request) {
-        throw new RuntimeException("Method not implemented.");
+    public Page<OrderProjection> findAll(int page, int size) {
+        final PageRequest pageable = PageRequest.of(page, size);
+        return orderRepository.findAllByOrderByCreatedDesc(pageable);
     }
 
     @Override
@@ -36,6 +38,11 @@ public class OrderService implements IOrderService {
     @Override
     public void deleteById(final String id) {
         throw new RuntimeException("Method not implemented.");
+    }
+
+    @Override
+    public void deleteByUserId(final String id) {
+        orderRepository.deleteByUserId(id);
     }
 
     @Override

@@ -1,10 +1,9 @@
 package live.evsianna.stylist.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import live.evsianna.stylist.model.projection.UserProjection;
+import live.evsianna.stylist.util.AuthorityDeserializer;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
@@ -12,18 +11,24 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import live.evsianna.stylist.utils.CustomAuthorityDeserializer;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -31,23 +36,23 @@ import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
-@Table(name = "user_tab")
+@Table(name = "app_user")
 @Entity
-@JsonSerialize
+@ToString(exclude = "roles")
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"id", "email"})
+@EqualsAndHashCode(of = {"email", "firstName", "lastName"}, callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class User implements UserDetails, UserProjection {
+public class User implements UserDetails {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column
     @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
+    @GenericGenerator(name = "UUID", strategy = "uuid2")
     private String id;
-
 
     @Size(min = 2, max = 50, message = "Имя должно быть не меньше 2 и не больше 50 символов.")
     @Column(name = "first_name", nullable = false)
@@ -68,35 +73,52 @@ public class User implements UserDetails, UserProjection {
     private String phone;
 
     @Email(message = "Поле электронной почты должно быть корректным.")
-    @Column(name = "email", nullable = false)
+    @Column(name = "email", nullable = false, unique = true)
     @NotBlank(message = "Поле электронной почты не должно быть пустым.")
     private String email;
 
     @Column(name = "password", nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(name = "created")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMMM-yyyy HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime created;
 
     @Column(name = "updated")
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMMM-yyyy HH:mm:ss")
     @CreationTimestamp
     private LocalDateTime updated;
+
+    @Column(name = "enabled")
+    private boolean enabled = true;
 
     @Getter(AccessLevel.NONE)
     @Setter(AccessLevel.NONE)
     @Version
+    @JsonIgnore
     private int version;
 
+    @JoinTable(name = "user_role",
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})},
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+    @ManyToMany(
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    private Set<Role> roles = new HashSet<>();
+
     @Override
-    @JsonDeserialize(using = CustomAuthorityDeserializer.class)
+    @JsonIgnore
+    @JsonDeserialize(using = AuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Set.of(new SimpleGrantedAuthority("SIMPLE_USER"));
+        final HashSet<GrantedAuthority> authorities = new HashSet<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        roles.forEach(r -> authorities.add(new SimpleGrantedAuthority(r.getName())));
+        return authorities;
     }
 
     @Override
+    @JsonIgnore
     public String getPassword() {
         return password;
     }
@@ -123,7 +145,7 @@ public class User implements UserDetails, UserProjection {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return enabled;
     }
 
     @Builder

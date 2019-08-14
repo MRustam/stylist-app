@@ -2,6 +2,8 @@ package live.evsianna.stylist.exception;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 class EntityErrorResponse<T> {
 
@@ -9,6 +11,6 @@ class EntityErrorResponse<T> {
 
     private String message;
 
-    private Long timeStamp;
+    private LocalDateTime created;
 
 }

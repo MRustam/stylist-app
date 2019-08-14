@@ -8,19 +8,13 @@ import java.time.LocalDateTime;
  * @author Rustam Mamedov
  */
 
-public interface UserProjection {
+public interface OrderProjection {
 
     String getId();
 
-    String getFirstName();
+    String getTitle();
 
-    String getLastName();
-
-    String getEmail();
-
-    String getPhone();
-
-    int getAge();
+    String getMessage();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     LocalDateTime getCreated();
