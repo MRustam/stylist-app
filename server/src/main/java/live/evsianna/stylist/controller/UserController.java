@@ -1,7 +1,7 @@
 package live.evsianna.stylist.controller;
 
 import live.evsianna.stylist.model.User;
-import live.evsianna.stylist.model.dto.UserOrderDTO;
+import live.evsianna.stylist.model.dto.UserFavorDTO;
 import live.evsianna.stylist.model.projection.UserProjection;
 import live.evsianna.stylist.service.interfaces.IUserService;
 import org.jetbrains.annotations.NotNull;
@@ -56,8 +56,8 @@ public class UserController {
     @PostMapping(value = "/save",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-    public ResponseEntity<UserOrderDTO> saveNewUserWithOrder(@RequestBody @NotNull @Valid final UserOrderDTO dto) {
-        return new ResponseEntity<>(iUserService.saveNewUserWithOrder(dto), HttpStatus.CREATED);
+    public ResponseEntity<UserFavorDTO> saveNewUserWithFavor(@RequestBody @NotNull @Valid final UserFavorDTO dto) {
+        return new ResponseEntity<>(iUserService.saveNewUserWithFavor(dto), HttpStatus.CREATED);
     }
 
 }

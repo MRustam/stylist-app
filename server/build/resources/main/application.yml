@@ -1,14 +1,14 @@
 server:
   port: 8080
 
+
+
 ---
+
+logging.level.root: INFO
 
 spring:
   profiles.active: development
-
-  stylist:
-    email: "some-email@gmail.com"
-    siteUrl: "http://stylist.evsianna.live/"
 
   jpa:
     generate-ddl: true
@@ -30,10 +30,13 @@ spring:
     test-connection: true
     host: smtp.yandex.ru
     port: 465
-    username: travolta.JoTravolta@yandex.ru
+    username: some.travolta.JoTravolta@yandex.ru
     password: 25802580
     protocol: smtps
     debug: true
+    siteUrl: "http://stylist.evsianna.live/"
+    stylist:
+      email: "some-email@gmail.com"
 
   datasource:
     initialization-mode: always
@@ -43,7 +46,12 @@ spring:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/stylist_db
 
+
+
+
 ---
+
+logging.level.org: ERROR
 
 spring:
   profiles: prodaction
@@ -76,4 +84,4 @@ spring:
     username: stylist_admin
     password: 123qwe
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/stylist_db
+    url: jdbc:postgresql://postgres-container:5432/stylist_db

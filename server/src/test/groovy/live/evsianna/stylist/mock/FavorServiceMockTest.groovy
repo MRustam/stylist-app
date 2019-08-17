@@ -11,9 +11,9 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import live.evsianna.stylist.model.Order
+import live.evsianna.stylist.model.Favor
 import live.evsianna.stylist.repository.UserRepository
-import live.evsianna.stylist.service.interfaces.IOrderService
+import live.evsianna.stylist.service.interfaces.IFavorService
 import live.evsianna.stylist.service.AppMailService
 
 import static org.mockito.ArgumentMatchers.any
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.times
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
+import static live.evsianna.stylist.utils.UserTestUtils.getUserFavorDTO
 
 /**
  * @author Rustam Mamedov
@@ -30,9 +30,9 @@ import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class OrderServiceMockTest {
+class FavorServiceMockTest {
 
-    private final static String REGISTER_USER_SAVE_ORDER = "/api/user/save"
+    private final static String REGISTER_USER_SAVE_FAVOR = "/api/user/save"
 
     @Autowired
     private MockMvc mockMvc
@@ -44,23 +44,23 @@ class OrderServiceMockTest {
     private UserRepository userRepository
 
     @MockBean
-    private IOrderService orderService
+    private IFavorService favorService
 
     @MockBean
     private AppMailService mailService
 
     @Test
     @WithMockUser
-    void RegisterUserAndSaveOrderTest() throws Exception {
+    void RegisterUserAndSaveFavorTest() throws Exception {
         given:
-        def dto = getUserOrderDTO()
+        def dto = getUserFavorDTO()
 
         when:
-        mockMvc.perform(post(REGISTER_USER_SAVE_ORDER)
+        mockMvc.perform(post(REGISTER_USER_SAVE_FAVOR)
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
-        verify(orderService, times(1)).save(any(Order.class))
-        verifyNoMoreInteractions(orderService)
+        verify(favorService, times(1)).save(any(Favor.class))
+        verifyNoMoreInteractions(favorService)
     }
 }

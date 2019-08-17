@@ -18,7 +18,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -30,8 +29,10 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -64,8 +65,8 @@ public class User implements UserDetails {
     @NotBlank(message = "Поле фамилии не должно быть пустым.")
     private String lastName;
 
-    @Positive(message = "Возраст должен быть больше нуля.")
     @Column(name = "age")
+    @Positive(message = "Возраст должен быть больше нуля.")
     private int age;
 
     @Column(name = "phone", nullable = false)
@@ -102,10 +103,14 @@ public class User implements UserDetails {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})},
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @ManyToMany(
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.DETACH, CascadeType.REFRESH})
+    @ManyToMany(fetch = FetchType.LAZY)
     private Set<Role> roles = new HashSet<>();
+
+    @JoinTable(name = "user_favor",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "favor_id", referencedColumnName = "id"))
+    @ManyToMany(fetch = FetchType.LAZY)
+    private Set<Favor> favors = new HashSet<>();
 
     @Override
     @JsonIgnore
@@ -156,5 +161,10 @@ public class User implements UserDetails {
         this.age = age;
         this.phone = phone;
         this.email = email;
+    }
+
+    public void addFavor(@NotNull final Favor favor) {
+        favor.incrementPopularity();
+        favors.add(favor);
     }
 }

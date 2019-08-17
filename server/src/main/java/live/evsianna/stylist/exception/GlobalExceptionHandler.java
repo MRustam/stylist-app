@@ -1,6 +1,6 @@
 package live.evsianna.stylist.exception;
 
-import live.evsianna.stylist.model.projection.OrderProjection;
+import live.evsianna.stylist.model.projection.FavorProjection;
 import live.evsianna.stylist.model.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,8 +44,8 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler
-    public ResponseEntity<EntityErrorResponse<OrderProjection>> handleOrderNotFoundExceptions(final OrderNotFoundException e) {
-        final EntityErrorResponse<OrderProjection> entityErrorResponse = new EntityErrorResponse<>();
+    public ResponseEntity<EntityErrorResponse<FavorProjection>> handleOrderNotFoundExceptions(final FavorNotFoundException e) {
+        final EntityErrorResponse<FavorProjection> entityErrorResponse = new EntityErrorResponse<>();
         entityErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
         entityErrorResponse.setMessage(e.getMessage());
         entityErrorResponse.setCreated(LocalDateTime.now());

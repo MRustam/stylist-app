@@ -24,11 +24,12 @@ VALUES ('uId-2', 'rId-3');
 INSERT INTO user_role (user_id, role_id)
 VALUES ('uId-3', 'rId-2');
 
-INSERT INTO order_tab (id, title, message, created, updated, version, user_id)
-VALUES ('oId-1', 'Order-1-title', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0, 'uId-1');
-INSERT INTO order_tab (id, title, message, created, updated, version, user_id)
-VALUES ('oId-2', 'Order-2-title', 'Bla-bla', '2016-10-09T11:44:44.797', '2016-11-09T11:44:44.797', 0, 'uId-1');
-INSERT INTO order_tab (id, title, message, created, updated, version, user_id)
-VALUES ('oId-3', 'Order-3-title', 'Bla-bla', '2016-09-09T11:44:44.797', '2016-11-09T11:44:44.797', 0, 'uId-1');
-INSERT INTO order_tab (id, title, message, created, updated, version, user_id)
-VALUES ('oId-4', 'Order-4-title', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0, 'uId-2');
+INSERT INTO favor_tab (id, title, description, created, updated, version)
+VALUES ('oId-1', 'Разбор гардероба офлайн', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, created, updated, version)
+VALUES ('oId-2', 'Разбор гардероба онлайн', 'Bla-bla', '2016-10-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, created, updated, version)
+VALUES ('oId-3', 'Капсула', 'Bla-bla', '2016-09-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, created, updated, version)
+VALUES ('oId-4', 'Консультация', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+

@@ -13,23 +13,21 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@Table(name = "order_tab")
+@Table(name = "favor_tab")
 @Entity
 @NoArgsConstructor
-@EqualsAndHashCode(of = {"title", "message"})
-public class Order {
+@EqualsAndHashCode(of = {"title", "description"})
+public class Favor {
 
     @Id
     @Column
@@ -37,19 +35,21 @@ public class Order {
     @GenericGenerator(name = "UUID", strategy = "uuid2")
     private String id;
 
-    @Size(min = 5, max = 200, message = "Название услуги должно быть не меньше 5 и не больше 100 символов.")
+    @Size(min = 4, max = 200, message = "Название услуги должно быть не меньше 4 и не больше 100 символов.")
     @Column(name = "title", nullable = false)
     @NotBlank(message = "Поле названия услуги не должно быть пустым.")
     private String title;
 
-    @Size(min = 5, max = 2000, message = "Сообщение должно быть не меньше 5 и не больше 2000 символов.")
-    @Column(name = "message", nullable = false, length = 2000)
-    @NotBlank(message = "Поле сообщения не должно быть пустым.")
-    private String message;
+    @Size(max = 2000, message = "Сообщение должно быть не больше 2000 символов.")
+    @Column(name = "description", length = 2000)
+    private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "sum")
+    private BigDecimal sum;
+
+    @Setter(AccessLevel.NONE)
+    @Column(name = "popularity")
+    private int popularity;
 
     @Column(name = "created")
     @CreationTimestamp
@@ -66,9 +66,12 @@ public class Order {
     private int version;
 
     @Builder
-    private Order(String title, String message, User user) {
+    private Favor(String title, String description) {
         this.title = title;
-        this.message = message;
-        this.user = user;
+        this.description = description;
+    }
+
+    public void incrementPopularity() {
+        popularity++;
     }
 }

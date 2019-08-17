@@ -1,9 +1,9 @@
 package live.evsianna.stylist.utils
 
 import live.evsianna.stylist.model.dto.UserDTO
-import live.evsianna.stylist.model.dto.UserOrderDTO
+import live.evsianna.stylist.model.dto.UserFavorDTO
 
-import live.evsianna.stylist.model.Order
+import live.evsianna.stylist.model.Favor
 import live.evsianna.stylist.model.User
 
 /**
@@ -22,7 +22,7 @@ class UserTestUtils {
                 .build()
     }
 
-    static UserOrderDTO getUserOrderDTO() {
+    static UserFavorDTO getUserFavorDTO() {
         def user = User.builder()
                 .firstName("User-111_first_name")
                 .lastName("User-111_last_name")
@@ -31,16 +31,15 @@ class UserTestUtils {
                 .age(130)
                 .build()
 
-        def order = Order.builder()
+        def favor = Favor.builder()
                 .title("bay course")
-                .message("Hello! I wonna by.")
-                .user(user)
+                .description("Hello! I wonna by.")
                 .build()
 
-        new UserOrderDTO(user, order)
+        new UserFavorDTO(user, favor)
     }
 
-    static UserOrderDTO getUserOrderDTOInvalid() {
+    static UserFavorDTO getUserFavorDTOInvalid() {
         def user = User.builder()
                 .firstName("U")
                 .lastName("U")
@@ -49,11 +48,10 @@ class UserTestUtils {
                 .age(-1)
                 .build()
 
-        def order = Order.builder()
+        def favor = Favor.builder()
                 .title("ba")
-                .message("He")
-                .user(user)
+                .description("He")
                 .build()
-        new UserOrderDTO(user, order)
+        new UserFavorDTO(user, favor)
     }
 }

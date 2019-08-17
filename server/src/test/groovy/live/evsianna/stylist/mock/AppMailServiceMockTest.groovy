@@ -11,9 +11,9 @@ import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
-import live.evsianna.stylist.model.dto.UserOrderDTO
+import live.evsianna.stylist.model.dto.UserFavorDTO
 import live.evsianna.stylist.repository.UserRepository
-import live.evsianna.stylist.service.interfaces.IOrderService
+import live.evsianna.stylist.service.interfaces.IFavorService
 import live.evsianna.stylist.service.AppMailService
 
 import static org.mockito.ArgumentMatchers.any
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.times
 import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
+import static live.evsianna.stylist.utils.UserTestUtils.getUserFavorDTO
 
 /**
  * @author Rustam Mamedov
@@ -32,7 +32,7 @@ import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
 @AutoConfigureMockMvc
 class AppMailServiceMockTest {
 
-    private final static String REGISTER_USER_SAVE_ORDER = "/api/user/save"
+    private final static String REGISTER_USER_SAVE_FAVOR = "/api/user/save"
 
     @Autowired
     private MockMvc mockMvc
@@ -44,24 +44,24 @@ class AppMailServiceMockTest {
     private UserRepository userRepository
 
     @MockBean
-    private IOrderService orderService
+    private IFavorService favorService
 
     @MockBean
     private AppMailService mailService
 
     @Test
     @WithMockUser
-    void RegisterUserAndSaveOrderTest() throws Exception {
+    void RegisterUserAndApplyFavorTest() throws Exception {
         given:
-        def dto = getUserOrderDTO()
+        def dto = getUserFavorDTO()
 
         when:
-        mockMvc.perform(post(REGISTER_USER_SAVE_ORDER)
+        mockMvc.perform(post(REGISTER_USER_SAVE_FAVOR)
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
-        verify(mailService, times(1)).sendEmailToClient(any(UserOrderDTO.class))
-        verify(mailService, times(1)).sendEmailToStylist(any(UserOrderDTO.class))
+        verify(mailService, times(1)).sendEmailToConsumer(any(UserFavorDTO.class))
+        verify(mailService, times(1)).sendEmailToStylist(any(UserFavorDTO.class))
         verifyNoMoreInteractions(mailService)
     }
 }

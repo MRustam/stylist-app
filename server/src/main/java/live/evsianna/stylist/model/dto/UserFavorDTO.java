@@ -2,7 +2,7 @@ package live.evsianna.stylist.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import live.evsianna.stylist.model.Order;
+import live.evsianna.stylist.model.Favor;
 import live.evsianna.stylist.model.User;
 import lombok.Data;
 
@@ -13,18 +13,18 @@ import javax.validation.Valid;
  */
 
 @Data
-public class UserOrderDTO {
+public class UserFavorDTO {
 
     @Valid
     private final User user;
 
     @Valid
-    private final Order order;
+    private final Favor favor;
 
     @JsonCreator
-    public UserOrderDTO(@Valid @JsonProperty("user") User user,
-                        @Valid @JsonProperty("order") Order order) {
+    public UserFavorDTO(@Valid @JsonProperty("user") User user,
+                        @Valid @JsonProperty("favor") Favor favor) {
         this.user = user;
-        this.order = order;
+        this.favor = favor;
     }
 }

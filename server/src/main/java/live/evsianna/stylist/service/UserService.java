@@ -1,14 +1,14 @@
 package live.evsianna.stylist.service;
 
 import live.evsianna.stylist.exception.UserNotCreatedException;
-import live.evsianna.stylist.model.dto.UserDTO;
-import live.evsianna.stylist.model.dto.UserOrderDTO;
 import live.evsianna.stylist.exception.UserNotFoundException;
-import live.evsianna.stylist.model.Order;
+import live.evsianna.stylist.model.Favor;
 import live.evsianna.stylist.model.User;
+import live.evsianna.stylist.model.dto.UserDTO;
+import live.evsianna.stylist.model.dto.UserFavorDTO;
 import live.evsianna.stylist.model.projection.UserProjection;
 import live.evsianna.stylist.repository.UserRepository;
-import live.evsianna.stylist.service.interfaces.IOrderService;
+import live.evsianna.stylist.service.interfaces.IFavorService;
 import live.evsianna.stylist.service.interfaces.IUserService;
 import lombok.Data;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -29,7 +29,7 @@ public class UserService implements IUserService {
 
     private final UserRepository userRepository;
 
-    private final IOrderService orderService;
+    private final IFavorService iFavorService;
 
     @Autowired
     private PasswordEncoder encoder;
@@ -38,9 +38,9 @@ public class UserService implements IUserService {
     private AppMailService appMailService;
 
     @Autowired
-    public UserService(UserRepository userRepository, IOrderService orderService) {
+    public UserService(UserRepository userRepository, IFavorService iFavorService) {
         this.userRepository = userRepository;
-        this.orderService = orderService;
+        this.iFavorService = iFavorService;
     }
 
     @Override
@@ -58,19 +58,16 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserOrderDTO saveNewUserWithOrder(final UserOrderDTO dto) {
+    public UserFavorDTO saveNewUserWithFavor(final UserFavorDTO dto) {
+        dto.getUser().setPassword(RandomStringUtils.randomAlphanumeric(7));
         appMailService.sendEmailToStylist(dto);
+        appMailService.sendEmailToConsumer(dto);
         final User user = dto.getUser();
-
-        user.setPassword(RandomStringUtils.randomAlphanumeric(7));
-        appMailService.sendEmailToClient(dto);
-
-        final Order order = dto.getOrder();
-        order.setUser(user);
-
-        final User userSaved = save(user);
-        final Order orderSaved = orderService.save(order);
-        return new UserOrderDTO(userSaved, orderSaved);
+        final Favor favor = dto.getFavor();
+        user.addFavor(favor);
+        this.save(user);
+        iFavorService.save(favor);
+        return new UserFavorDTO(user, favor);
     }
 
     @Override
@@ -84,9 +81,8 @@ public class UserService implements IUserService {
     @Transactional
     public void saveSimple(final User user) {
         user.setPassword(RandomStringUtils.randomAlphanumeric(7));
-        appMailService.sendEmailToClient(user);
-        user.setPassword(encoder.encode(user.getPassword()));
-        userRepository.save(user);
+        appMailService.sendEmailToConsumer(user);
+        this.save(user);
         if (user.getId() == null) {
             throw new UserNotCreatedException("Some problem occurred while creating a user." + user.toString());
         }
@@ -118,7 +114,6 @@ public class UserService implements IUserService {
     public void deleteById(final String id) {
         final User user = findById(id);
         user.setRoles(null);
-        orderService.deleteByUserId(user.getId());
         userRepository.delete(user);
     }
 

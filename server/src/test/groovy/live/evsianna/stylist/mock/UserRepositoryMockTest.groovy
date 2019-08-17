@@ -14,7 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 import live.evsianna.stylist.model.User
 import live.evsianna.stylist.repository.UserRepository
-import live.evsianna.stylist.service.interfaces.IOrderService
+import live.evsianna.stylist.service.interfaces.IFavorService
 import live.evsianna.stylist.service.AppMailService
 
 import static org.mockito.ArgumentMatchers.any
@@ -23,8 +23,7 @@ import static org.mockito.Mockito.verify
 import static org.mockito.Mockito.verifyNoMoreInteractions
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
-import static live.evsianna.stylist.utils.UserTestUtils.getUserRequestDTO
+import static live.evsianna.stylist.utils.UserTestUtils.getUserFavorDTO
 
 /**
  * @author Rustam Mamedov
@@ -37,7 +36,7 @@ class UserRepositoryMockTest {
 
     private final static String FIND_ALL_USERS = "/api/user/all"
 
-    private final static String REGISTER_USER_SAVE_ORDER = "/api/user/save"
+    private final static String REGISTER_USER_SAVE_FAVOR = "/api/user/save"
 
     @Autowired
     private MockMvc mockMvc
@@ -49,19 +48,19 @@ class UserRepositoryMockTest {
     private UserRepository userRepository
 
     @MockBean
-    private IOrderService orderService
+    private IFavorService favorService
 
     @MockBean
     private AppMailService mailService
 
     @Test
     @WithMockUser
-    void RegisterUserAndSaveOrderTest() throws Exception {
+    void RegisterUserAndApplyFavorTest() throws Exception {
         given:
-        def dto = getUserOrderDTO()
+        def dto = getUserFavorDTO()
 
         when:
-        mockMvc.perform(post(REGISTER_USER_SAVE_ORDER)
+        mockMvc.perform(post(REGISTER_USER_SAVE_FAVOR)
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:

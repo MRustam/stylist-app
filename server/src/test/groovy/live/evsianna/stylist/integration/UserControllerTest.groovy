@@ -16,8 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner
 import org.springframework.test.web.servlet.MockMvc
 
 import static live.evsianna.stylist.utils.UserTestUtils.getUserDTO
-import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTO
-import static live.evsianna.stylist.utils.UserTestUtils.getUserOrderDTOInvalid
+import static live.evsianna.stylist.utils.UserTestUtils.getUserFavorDTO
+import static live.evsianna.stylist.utils.UserTestUtils.getUserFavorDTOInvalid
 import static org.hamcrest.CoreMatchers.containsString
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print
@@ -36,7 +36,7 @@ class UserControllerTest {
 
     private final static String FIND_USERS_BY_ID = "/api/user/by-id/{id}"
 
-    private final static String REGISTER_USER_SAVE_ORDER = "/api/user/save"
+    private final static String REGISTER_USER_SAVE_FAVOR = "/api/user/save"
 
     private final static String REGISTER_USER = "/api/user/save/simple"
 
@@ -132,12 +132,12 @@ class UserControllerTest {
     @Sql(value = "/after.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     @Test
     @WithMockUser
-    void "Register user and save order valid DTO"() throws Exception {
+    void "Register user and save favor valid DTO"() throws Exception {
         given:
-        def dto = getUserOrderDTO()
+        def dto = getUserFavorDTO()
 
         when:
-        def result = mockMvc.perform(post(REGISTER_USER_SAVE_ORDER)
+        def result = mockMvc.perform(post(REGISTER_USER_SAVE_FAVOR)
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
@@ -152,22 +152,22 @@ class UserControllerTest {
                 .andExpect(jsonPath('$.user.email').value("user111@gmail.com"))
                 .andExpect(jsonPath('$.user.created').isNotEmpty())
                 .andExpect(jsonPath('$.user.updated').isNotEmpty())
-                .andExpect(jsonPath('$.order.title').value("bay course"))
-                .andExpect(jsonPath('$.order.message').value("Hello! I wonna by."))
-                .andExpect(jsonPath('$.order.created').isNotEmpty())
-                .andExpect(jsonPath('$.order.updated').isNotEmpty())
-                .andExpect(jsonPath('$.order.user').isNotEmpty())
+                .andExpect(jsonPath('$.favor.title').value("bay course"))
+                .andExpect(jsonPath('$.favor.description').value("Hello! I wonna by."))
+                .andExpect(jsonPath('$.favor.created').isNotEmpty())
+                .andExpect(jsonPath('$.favor.updated').isNotEmpty())
+                .andExpect(jsonPath('$.favor.user').isNotEmpty())
 
     }
 
     @Test
     @WithMockUser
-    void "Register user and save order invalid DTO"() throws Exception {
+    void "Register user and save favor invalid DTO"() throws Exception {
         given:
-        def dto = getUserOrderDTOInvalid()
+        def dto = getUserFavorDTOInvalid()
 
         when:
-        def result = mockMvc.perform(post(REGISTER_USER_SAVE_ORDER)
+        def result = mockMvc.perform(post(REGISTER_USER_SAVE_FAVOR)
                 .content(mapper.writeValueAsString(dto))
                 .contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
         then:
@@ -178,7 +178,7 @@ class UserControllerTest {
                 .andExpect(content().string(containsString("\"user.lastName\":\"Фамилия должна быть не меньше 2 и не больше 50 символов.\"")))
                 .andExpect(content().string(containsString("\"user.email\":\"Поле электронной почты должно быть корректным.\"")))
                 .andExpect(content().string(containsString("\"user.age\":\"Возраст должен быть больше нуля.\"")))
-                .andExpect(content().string(containsString("\"order.title\":\"Название услуги должно быть не меньше 5 и не больше 100 символов.")))
-                .andExpect(content().string(containsString("\"order.message\":\"Сообщение должно быть не меньше 5 и не больше 2000 символов.\"")))
+                .andExpect(content().string(containsString("\"favor.title\":\"Название услуги должно быть не меньше 5 и не больше 100 символов.")))
+                .andExpect(content().string(containsString("\"favor.description\":\"Сообщение должно быть не меньше 5 и не больше 2000 символов.\"")))
     }
 }
