@@ -46,7 +46,7 @@ class UserList extends Component {
     }
 
     // Add new User
-    addUser(user) {
+    addUser = (user) => {
         api.post('/user/save/simple', user)
             .then(res => {
                 toast.success("Пользователь создан.", {
@@ -112,10 +112,10 @@ class UserList extends Component {
         ]
         return (
             <div className="App">
-                <AddUser addUser={this.addUser}/>
+                <AddUser addUser={this.addUser} fetchUser={this.fetchUsers} />
                 <ReactTable data={this.state.users} columns={columns} filterable={false} sortable={false}
                             pageSize={this.state.size}/>
-                <ToastContainer autoClose={2000}/>
+                <ToastContainer autoClose={3000}/>
             </div>
         )
     }

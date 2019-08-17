@@ -42,13 +42,16 @@ class AddUser extends Component {
                         <input type="text" placeholder="Фамилия" name="lastName" onChange={this.handleChange}/><br/>
                         <input type="text" placeholder="Возраст" name="age" onChange={this.handleChange}/><br/>
                         <input type="text" placeholder="Телефон" name="phone" onChange={this.handleChange}/><br/>
-                        <input type="text" placeholder="Почта" name="email" onChange={this.handleChange}/><br/>
+                        <input type="email" placeholder="Почта" name="email" onChange={this.handleChange}/><br/>
                         <button onClick={this.handleSubmit}>Сохранить</button>
                         <button onClick={this.cancelSubmit}>Отмена</button>
                     </form>
                 </SkyLight>
                 <div>
-                    <button style={{'margin': '10px'}} onClick={() => this.refs.addDialog.show()}>Добавить</button>
+                    <button style={{'margin-bottom': '10px'}} className= "ui basic button" onClick={() => this.refs.addDialog.show()}>
+                        <i className="icon user"/>
+                        Добавить
+                    </button>
                 </div>
             </div>
         )

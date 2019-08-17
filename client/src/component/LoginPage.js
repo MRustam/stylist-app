@@ -1,17 +1,9 @@
 import React from 'react'
-import Faker from 'faker'
 
 const LoginPage = () => (
 
     <div className="ui middle aligned center aligned grid">
         <div className="column">
-
-            <h2 className="ui teal image header">
-                <img src={Faker.image.avatar()} className="image"/>
-                <div className="content">
-                    Log-in to your account
-                </div>
-            </h2>
 
             <form className="ui large form">
                 <div className="ui stacked segment">
