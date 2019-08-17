@@ -1,16 +1,17 @@
 server:
   port: 8080
-  servlet:
-      session:
-        timeout: 400s
-  error:
-    whitelabel:
-      enabled: false
+
+---
 
 spring:
+  profiles.active: development
+
+  stylist:
+    email: "some-email@gmail.com"
+    siteUrl: "http://stylist.evsianna.live/"
 
   jpa:
-    open-in-view: false
+    generate-ddl: true
     hibernate:
       ddl-auto: create-drop
     properties:
@@ -23,6 +24,8 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
+    open-in-view: false
+
   mail:
     test-connection: true
     host: smtp.yandex.ru
@@ -30,19 +33,42 @@ spring:
     username: travolta.JoTravolta@yandex.ru
     password: 25802580
     protocol: smtps
-    stylist:
-      email: "evsianna@gmail.com"
-    siteUrl: "www.qwe.com"
     debug: true
 
-#  h2:
-#    console:
-#      enabled: true
+  datasource:
+    initialization-mode: always
+    platform: postges
+    username: stylist_admin
+    password: 123qwe
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/stylist_db
 
-#  datasource:
-#    initialization-mode: always
-#    driverClassName: org.h2.Driver
-#    url: jdbc:h2:mem:stylist_db
+---
+
+spring:
+  profiles: prodaction
+
+  jpa:
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL93Dialect
+        current_session_context_class: thread
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  mail:
+    test-connection: true
+    host: smtp.yandex.ru
+    port: 465
+    username: travolta.JoTravolta@yandex.ru
+    password: 25802580
+    protocol: smtps
+    debug: false
 
   datasource:
     initialization-mode: always

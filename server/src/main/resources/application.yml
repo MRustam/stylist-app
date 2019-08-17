@@ -1,8 +1,14 @@
 server:
   port: 8080
 
+
+
+---
+
+logging.level.root: INFO
+
 spring:
-  data.rest.base-path: /api/resource
+  profiles.active: development
 
   jpa:
     generate-ddl: true
@@ -11,9 +17,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL93Dialect
-        show_sql: true
-        use_sql_comments: true
-        format_sql: true
+        show_sql: false
+        use_sql_comments: false
+        format_sql: false
         current_session_context_class: thread
         jdbc:
           lob:
@@ -24,13 +30,13 @@ spring:
     test-connection: true
     host: smtp.yandex.ru
     port: 465
-    username: travolta.JoTravolta@yandex.ru
+    username: some.travolta.JoTravolta@yandex.ru
     password: 25802580
     protocol: smtps
-    stylist:
-      email: "evsianna@gmail.com"
-    siteUrl: "www.qwe.com"
     debug: true
+    siteUrl: "http://stylist.evsianna.live/"
+    stylist:
+      email: "some-email@gmail.com"
 
   datasource:
     initialization-mode: always
@@ -39,3 +45,43 @@ spring:
     password: 123qwe
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/stylist_db
+
+
+
+
+---
+
+logging.level.org: ERROR
+
+spring:
+  profiles: prodaction
+
+  jpa:
+    generate-ddl: true
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL93Dialect
+        current_session_context_class: thread
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+  mail:
+    test-connection: true
+    host: smtp.yandex.ru
+    port: 465
+    username: travolta.JoTravolta@yandex.ru
+    password: 25802580
+    protocol: smtps
+    debug: false
+
+  datasource:
+    initialization-mode: always
+    platform: postges
+    username: stylist_admin
+    password: 123qwe
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://postgres-container:5432/stylist_db

@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import ReactTable from 'react-table'
 import 'react-table/react-table.css'
-import {SERVER_URL} from '../constan'
 import {confirmAlert} from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import {ToastContainer, toast} from 'react-toastify'
@@ -11,12 +10,12 @@ import api from '../axios-config'
 
 class UserList extends Component {
     constructor(props) {
-        super(props);
+        super(props)
         this.state = {users: [], page: 0, size: 20}
     }
 
     componentDidMount() {
-        this.fetchUsers();
+        this.fetchUsers()
     }
 
     // Fetch all users
@@ -52,26 +51,26 @@ class UserList extends Component {
             .then(res => {
                 toast.success("Пользователь создан.", {
                     position: toast.POSITION.TOP_RIGHT
-                });
+                })
                 this.fetchUsers()
             })
             .catch(err => {
                 toast.error(err.message, {
                     position: toast.POSITION.TOP_RIGHT
-                });
+                })
             })
     }
 
     // Disable user
     onDelClick = (id) => {
-        fetch(SERVER_URL + '/user/enabled/' + id + '/' + false,
-            {method: 'PATCH'}
-        ).then(res => {
-            toast.success("Пользователь удален.", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-            this.fetchUsers()
-        }).catch(err => {
+        api.patch('/user/enabled/' + id + '/false')
+            .then(res => {
+                toast.success("Пользователь удален.", {
+                    position: toast.POSITION.TOP_RIGHT
+                })
+                this.fetchUsers()
+            })
+            .catch(err => {
             toast.error("Ошибка удаления.", {
                 position: toast.POSITION.TOP_RIGHT
             });

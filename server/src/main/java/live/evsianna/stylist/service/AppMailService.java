@@ -1,10 +1,9 @@
 package live.evsianna.stylist.service;
 
-import live.evsianna.stylist.model.dto.UserDTO;
-import live.evsianna.stylist.model.dto.UserOrderDTO;
 import live.evsianna.stylist.model.Order;
 import live.evsianna.stylist.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
+import live.evsianna.stylist.model.dto.UserOrderDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
@@ -12,14 +11,10 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class AppMailService {
 
     private final JavaMailSender mailSender;
-
-    @Autowired
-    public AppMailService(JavaMailSender mailSender) {
-        this.mailSender = mailSender;
-    }
 
     @Value("${spring.mail.username}")
     private String smtpSenderEmail;

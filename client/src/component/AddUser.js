@@ -1,35 +1,35 @@
-import React from 'react';
-import SkyLight from 'react-skylight';
+import React, {Component} from 'react'
+import SkyLight from 'react-skylight'
 
-class AddUser extends React.Component {
+class AddUser extends Component {
 
     constructor(props) {
-        super(props);
-        this.state = {firstName: '', lastName: '', age: '', phone: '', email: ''};
+        super(props)
+        this.state = {firstName: '', lastName: '', age: '', phone: '', email: ''}
     }
 
     // Save car and close modal form
     handleSubmit = (event) => {
-        event.preventDefault();
+        event.preventDefault()
         this.props.addUser({
             firstName: this.state.firstName,
             lastName: this.state.lastName,
             age: this.state.age,
             phone: this.state.phone,
             email: this.state.email
-        });
-        this.refs.addDialog.hide();
+        })
+        this.refs.addDialog.hide()
     }
 
     cancelSubmit = (event) => {
-        event.preventDefault();
-        this.refs.addDialog.hide();
+        event.preventDefault()
+        this.refs.addDialog.hide()
     }
 
     handleChange = (event) => {
         this.setState(
             {[event.target.name]: event.target.value}
-        );
+        )
     }
 
     render() {
@@ -51,8 +51,8 @@ class AddUser extends React.Component {
                     <button style={{'margin': '10px'}} onClick={() => this.refs.addDialog.show()}>Добавить</button>
                 </div>
             </div>
-        );
+        )
     }
 }
 
-export default AddUser;
+export default AddUser
