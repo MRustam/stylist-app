@@ -1,5 +1,6 @@
 package live.evsianna.stylist.service;
 
+import live.evsianna.stylist.exception.FavorNotFoundException;
 import live.evsianna.stylist.model.Favor;
 import live.evsianna.stylist.model.projection.FavorProjection;
 import live.evsianna.stylist.repository.FavorRepository;
@@ -26,7 +27,8 @@ public class FavorService implements IFavorService {
 
     @Override
     public Favor findById(final String id) {
-        throw new RuntimeException("Method not implemented.");
+        return favorRepository.findById(id)
+                .orElseThrow(() -> new FavorNotFoundException("Favor with id '" + id + "' - Not found!"));
     }
 
     @Override

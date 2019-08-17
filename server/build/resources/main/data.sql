@@ -24,12 +24,12 @@ VALUES ('uId-2', 'rId-3');
 INSERT INTO user_role (user_id, role_id)
 VALUES ('uId-3', 'rId-2');
 
-INSERT INTO favor_tab (id, title, description, created, updated, version)
-VALUES ('oId-1', 'Разбор гардероба офлайн', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
-INSERT INTO favor_tab (id, title, description, created, updated, version)
-VALUES ('oId-2', 'Разбор гардероба онлайн', 'Bla-bla', '2016-10-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
-INSERT INTO favor_tab (id, title, description, created, updated, version)
-VALUES ('oId-3', 'Капсула', 'Bla-bla', '2016-09-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
-INSERT INTO favor_tab (id, title, description, created, updated, version)
-VALUES ('oId-4', 'Консультация', 'Bla-bla', '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, price, popularity, created, updated, version)
+VALUES ('oId-1', 'Разбор гардероба офлайн', 'Bla-bla', 2000.00, 15, '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, price, popularity, created, updated, version)
+VALUES ('oId-2', 'Разбор гардероба онлайн', 'Bla-bla', 2000.00, 17, '2016-10-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, price, popularity, created, updated, version)
+VALUES ('oId-3', 'Капсула', 'Bla-bla', 2000.00, 17, '2016-09-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
+INSERT INTO favor_tab (id, title, description, price, popularity, created, updated, version)
+VALUES ('oId-4', 'Консультация', 'Bla-bla', 2000.00, 17, '2016-11-09T11:44:44.797', '2016-11-09T11:44:44.797', 0);
 

@@ -44,12 +44,12 @@ public class Favor {
     @Column(name = "description", length = 2000)
     private String description;
 
-    @Column(name = "sum")
-    private BigDecimal sum;
+    @Column(name = "price")
+    private BigDecimal price;
 
     @Setter(AccessLevel.NONE)
     @Column(name = "popularity")
-    private int popularity;
+    private Integer popularity;
 
     @Column(name = "created")
     @CreationTimestamp
@@ -66,10 +66,14 @@ public class Favor {
     private int version;
 
     @Builder
-    private Favor(String title, String description) {
+    public Favor(String title,
+                 String description,
+                 BigDecimal price) {
         this.title = title;
         this.description = description;
+        this.price = price;
     }
+
 
     public void incrementPopularity() {
         popularity++;

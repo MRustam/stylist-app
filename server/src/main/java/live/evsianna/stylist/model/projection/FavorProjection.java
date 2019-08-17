@@ -17,9 +17,9 @@ public interface FavorProjection {
 
     String getDescription();
 
-    BigDecimal getSum();
+    BigDecimal getPrice();
 
-    int getPopularity();
+    Integer getPopularity();
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     LocalDateTime getCreated();

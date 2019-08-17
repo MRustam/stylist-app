@@ -21,6 +21,8 @@ public interface IUserService extends UserDetailsService {
 
     User save(final User user);
 
+    void subscribe(final User user, final String favorId);
+
     void deleteById(final String id);
 
     void setIsEnabledById(boolean enabled, final String id);

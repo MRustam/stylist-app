@@ -1,7 +1,7 @@
 package live.evsianna.stylist.exception;
 
-import live.evsianna.stylist.model.projection.FavorProjection;
 import live.evsianna.stylist.model.User;
+import live.evsianna.stylist.model.projection.FavorProjection;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,10 +19,8 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd-MMMM-yyyy HH:mm:ss");
-
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler
+    @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<EntityErrorResponse<User>> handleUserNotFound(final UserNotFoundException e) {
         final EntityErrorResponse<User> entityErrorResponse = new EntityErrorResponse<>();
         entityErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
@@ -33,7 +30,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.CONFLICT)
-    @ExceptionHandler
+    @ExceptionHandler(UserNotCreatedException.class)
     public ResponseEntity<EntityErrorResponse<User>> handleUserNotCreated(final UserNotCreatedException e) {
         final EntityErrorResponse<User> entityErrorResponse = new EntityErrorResponse<>();
         entityErrorResponse.setStatus(HttpStatus.CONFLICT.value());
@@ -42,8 +39,18 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(entityErrorResponse, HttpStatus.CONFLICT);
     }
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(UserIsNotAuthorizedException.class)
+    public ResponseEntity<EntityErrorResponse<User>> handleUserNotAuthorized(final UserIsNotAuthorizedException e) {
+        final EntityErrorResponse<User> entityErrorResponse = new EntityErrorResponse<>();
+        entityErrorResponse.setStatus(HttpStatus.UNAUTHORIZED.value());
+        entityErrorResponse.setMessage(e.getMessage());
+        entityErrorResponse.setCreated(LocalDateTime.now());
+        return new ResponseEntity<>(entityErrorResponse, HttpStatus.UNAUTHORIZED);
+    }
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler
+    @ExceptionHandler(FavorNotFoundException.class)
     public ResponseEntity<EntityErrorResponse<FavorProjection>> handleOrderNotFoundExceptions(final FavorNotFoundException e) {
         final EntityErrorResponse<FavorProjection> entityErrorResponse = new EntityErrorResponse<>();
         entityErrorResponse.setStatus(HttpStatus.NOT_FOUND.value());
@@ -53,7 +60,7 @@ public class GlobalExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler
+    @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleValidExceptions(final MethodArgumentNotValidException e) {
         final Map<String, String> errors = new HashMap<>();
         e.getBindingResult().getAllErrors().forEach((err) -> {
@@ -61,7 +68,7 @@ public class GlobalExceptionHandler {
             final String errorMessage = err.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        errors.put("time", dtf.format(LocalDateTime.now()));
+        errors.put("time", LocalDateTime.now().toString());
         return errors;
     }
 

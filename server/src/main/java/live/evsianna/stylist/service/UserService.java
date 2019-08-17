@@ -1,5 +1,6 @@
 package live.evsianna.stylist.service;
 
+import live.evsianna.stylist.exception.UserIsNotAuthorizedException;
 import live.evsianna.stylist.exception.UserNotCreatedException;
 import live.evsianna.stylist.exception.UserNotFoundException;
 import live.evsianna.stylist.model.Favor;
@@ -23,8 +24,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Data
 @Service
+@Transactional
 public class UserService implements IUserService {
 
     private final UserRepository userRepository;
@@ -71,14 +75,12 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @Transactional
     public User save(final User user) {
         user.setPassword(encoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
     @Override
-    @Transactional
     public void saveSimple(final User user) {
         user.setPassword(RandomStringUtils.randomAlphanumeric(7));
         appMailService.sendEmailToConsumer(user);
@@ -103,14 +105,12 @@ public class UserService implements IUserService {
                 .orElseThrow(() -> new UserNotFoundException("User with userId '" + id + "' - Not found!"));
     }
 
-    @Transactional
     public void setIsEnabledById(boolean enabled, final String id) {
         final User user = findById(id);
         user.setEnabled(enabled);
     }
 
     @Override
-    @Transactional
     public void deleteById(final String id) {
         final User user = findById(id);
         user.setRoles(null);
@@ -118,9 +118,17 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @Transactional
     public UserDTO update(UserDTO user) {
         throw new RuntimeException("Method not implemented.");
+    }
+
+    @Override
+    public void subscribe(final User user, final String favorId) {
+        final User authorized = Optional.ofNullable(user)
+                .orElseThrow(() -> new UserIsNotAuthorizedException("User is Not Authorized."));
+        final Favor favor = iFavorService.findById(favorId);
+        authorized.addFavor(favor);
+        userRepository.save(authorized);
     }
 
 }
