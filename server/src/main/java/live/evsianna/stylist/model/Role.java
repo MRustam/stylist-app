@@ -1,6 +1,7 @@
 package live.evsianna.stylist.model;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.Version;
 
 @Table(name = "role")
 @Entity
+@NoArgsConstructor
 public class Role {
 
     @Id

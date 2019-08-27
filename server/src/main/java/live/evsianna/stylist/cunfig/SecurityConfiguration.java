@@ -6,6 +6,7 @@ import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,11 +36,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable();
-        http
+                .csrf()
+                .disable().cors()
+                    .and()
+                .httpBasic()
+                    .and()
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll();
+                .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/favor/all").permitAll()
+                .antMatchers("/api/user/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .formLogin()
+                .loginProcessingUrl("/api/login");
     }
 
     @Bean

@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,6 +41,12 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UserProjection findById(@PathVariable final String id) {
         return iUserService.findProjectionById(id);
+    }
+    
+    @GetMapping(value = "/current",
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public User findById(@AuthenticationPrincipal User user) {
+       return user;
     }
 
     @PatchMapping(value = "/enabled/{id}/{enabled}")

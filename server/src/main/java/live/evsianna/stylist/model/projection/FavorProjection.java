@@ -21,6 +21,8 @@ public interface FavorProjection {
 
     Integer getPopularity();
 
+    Boolean getIsOnSale();
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     LocalDateTime getCreated();
 

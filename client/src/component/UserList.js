@@ -20,7 +20,10 @@ class UserList extends Component {
 
     // Fetch all users
     fetchUsers = () => {
-        api.get('/user/all?page=' + this.state.page + '&size=' + this.state.size)
+        const jwt = sessionStorage.getItem('jwt')
+        api.get('/user/all?page=' + this.state.page + '&size=' + this.state.size,
+            {headers: {'Authorization': jwt}}
+        )
             .then(response => {
                 this.setState({
                     users: response.data.content
@@ -47,7 +50,10 @@ class UserList extends Component {
 
     // Add new User
     addUser = (user) => {
-        api.post('/user/save/simple', user)
+        const jwt = sessionStorage.getItem('jwt')
+        api.post('/user/save/simple', user,
+            {headers: {'Authorization': jwt}}
+        )
             .then(res => {
                 toast.success("Пользователь создан.", {
                     position: toast.POSITION.TOP_RIGHT
@@ -63,7 +69,10 @@ class UserList extends Component {
 
     // Disable user
     onDelClick = (id) => {
-        api.patch('/user/enabled/' + id + '/false')
+        const jwt = sessionStorage.getItem('jwt')
+        api.patch('/user/enabled/' + id + '/false',
+            {headers: {'Authorization': jwt}}
+        )
             .then(res => {
                 toast.success("Пользователь удален.", {
                     position: toast.POSITION.TOP_RIGHT
@@ -71,10 +80,10 @@ class UserList extends Component {
                 this.fetchUsers()
             })
             .catch(err => {
-            toast.error("Ошибка удаления.", {
-                position: toast.POSITION.TOP_RIGHT
-            });
-        })
+                toast.error("Ошибка удаления.", {
+                    position: toast.POSITION.TOP_RIGHT
+                });
+            })
     }
 
     render() {
@@ -112,7 +121,7 @@ class UserList extends Component {
         ]
         return (
             <div className="App">
-                <AddUser addUser={this.addUser} fetchUser={this.fetchUsers} />
+                <AddUser addUser={this.addUser} fetchUser={this.fetchUsers}/>
                 <ReactTable data={this.state.users} columns={columns} filterable={false} sortable={false}
                             pageSize={this.state.size}/>
                 <ToastContainer autoClose={3000}/>

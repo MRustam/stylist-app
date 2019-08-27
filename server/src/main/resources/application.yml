@@ -5,7 +5,9 @@ server:
 
 ---
 
-logging.level.root: INFO
+logging.level:
+  root: INFO
+  org.springframework.security: ERROR
 
 spring:
   profiles.active: development
