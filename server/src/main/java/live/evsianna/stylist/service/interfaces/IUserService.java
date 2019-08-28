@@ -6,6 +6,7 @@ import live.evsianna.stylist.model.dto.UserFavorDTO;
 import live.evsianna.stylist.model.projection.UserProjection;
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface IUserService extends UserDetailsService {
 
@@ -28,5 +29,8 @@ public interface IUserService extends UserDetailsService {
     void setIsEnabledById(boolean enabled, final String id);
 
     UserDTO update(final UserDTO user);
+
+    @Override
+    User loadUserByUsername(String username) throws UsernameNotFoundException;
 
 }

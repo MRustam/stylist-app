@@ -43,30 +43,33 @@ class HomePage extends Component {
 
     render() {
         return (
-            <div className="ui divided items">
+            <div className="ui link cards">
                 {this.state.favors.map((el) => {
-                    return(<div id="item" className="item">
+                    return (<div id="item" className="card">
                         <div className="ui grid">
-                            <div className="seven wide column">
-                                <div className="ui small image">
+                            <div className="six wide column">
+                                <div className="ui large bordered image">
+                                    {el.isOnSale ? <a className="ui tiny purple right ribbon label">акция</a> : null}
                                     <img src={Faker.image.avatar()}/>
                                 </div>
                             </div>
-                            <div className="nine wide column">
-                                <div className="middle aligned content">
-                                    <div className="header">
-                                        {el.title}
-                                    </div>
-                                    <div className="description">
+                            <div className="ten wide column">
+                                <div className="content">
+                                    <h3 className="header">{el.title}</h3>
+                                    <div className="meta">
                                         {el.description}
                                     </div>
-                                    <div className="extra">
-                                        <div className="ui primary button" onClick={() => {
-                                            this.subscribe(el.id)
-                                        }}>
-                                            Интересно
-                                            <i className="right chevron icon"/>
-                                        </div>
+                                    <div className="extra content">
+                                        <div className="ui divider"/>
+                                        <span className="left floated">
+                                            <i className="graduation cap icon"/>
+                                            {el.popularity}
+                                        </span>
+                                        {/*<div className="ui tag labels">*/}
+                                        {/*    <a className="ui right floated large blue label" onClick={() => {this.subscribe(el.id)}}>*/}
+                                        {/*        ₽ {el.price}*/}
+                                        {/*    </a>*/}
+                                        {/*</div>*/}
                                     </div>
                                 </div>
                             </div>

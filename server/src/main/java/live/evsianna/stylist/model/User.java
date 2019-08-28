@@ -29,7 +29,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
-import javax.validation.constraints.Digits;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -43,7 +42,7 @@ import java.util.Set;
 @Data
 @Table(name = "app_user")
 @Entity
-@ToString(exclude = "roles")
+@ToString(exclude = {"roles", "favors"})
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"email", "firstName", "lastName"}, callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -103,21 +102,21 @@ public class User implements UserDetails {
             uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role_id"})},
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
     private Set<Role> roles = new HashSet<>();
 
     @JoinTable(name = "user_favor",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "favor_id", referencedColumnName = "id"))
     @ManyToMany(fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Favor> favors = new HashSet<>();
 
     @Override
-    @JsonIgnore
     @JsonDeserialize(using = AuthorityDeserializer.class)
     public Collection<? extends GrantedAuthority> getAuthorities() {
         final HashSet<GrantedAuthority> authorities = new HashSet<>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
         roles.forEach(r -> authorities.add(new SimpleGrantedAuthority(r.getName())));
         return authorities;
     }

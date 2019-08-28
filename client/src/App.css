@@ -1,3 +1,13 @@
+h3, h4, p, div {
+    font-family: Comic Sans MS, Comic Sans, cursive
+}
+.heading {
+    font-weight: 700;
+}
+.subheading {
+    font-weight: 300;
+}
+
 #item {
     margin-bottom: 10px !important;
 }
@@ -24,6 +34,10 @@
     background-color: #4183c4;
     color: #fff;
     text-shadow: none;
+}
+.ui.card, .ui.cards>.card {
+    /*min-width: 360px;*/
+    width: 460px;
 }
 .react-confirm-alert-body {
   margin-left: 25px;

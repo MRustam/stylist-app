@@ -9,28 +9,28 @@ class AppHeader extends Component {
         return (
             <div className='ui horizontal list'>
                 <div className='item'>
-                    <img className="ui mini circular image" src={Faker.internet.avatar()} />
-                        <div className="content">
-                            <div className="ui sub header"><Link to="/">Home</Link></div>
-                        </div>
+                    <img className="ui mini circular image" src={Faker.internet.avatar()}/>
+                    <div className="content">
+                        <div className="ui sub header"><Link to="/">Home</Link></div>
+                    </div>
                 </div>
                 <div className='item'>
-                    <img className="ui mini circular image" src={Faker.internet.avatar()} />
-                        <div className="content">
-                            <div className="ui sub header"><Link to="/course">Course</Link></div>
-                        </div>
+                    <img className="ui mini circular image" src={Faker.internet.avatar()}/>
+                    <div className="content">
+                        <div className="ui sub header"><Link to="/course">Course</Link></div>
+                    </div>
                 </div>
                 <div className='item'>
-                    <img className="ui mini circular image" src={Faker.internet.avatar()} />
-                        <div className="content">
-                            <div className="ui sub header"><Link to="/users">Users</Link></div>
-                        </div>
+                    <img className="ui mini circular image" src={Faker.internet.avatar()}/>
+                    <div className="content">
+                        <div className="ui sub header"><Link to="/users">Users</Link></div>
+                    </div>
                 </div>
                 <div className='item'>
-                    <img className="ui mini circular image" src={Faker.internet.avatar()} />
-                        <div className="content">
-                            <div className="ui sub header"><Link to="/login">Login</Link></div>
-                        </div>
+                    <img className="ui mini circular image" src={Faker.internet.avatar()}/>
+                    <div className="content">
+                        <div className="ui sub header"><Link to="/login">Login</Link></div>
+                    </div>
                 </div>
 
             </div>

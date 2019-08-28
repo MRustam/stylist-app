@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -40,6 +41,11 @@ public class UserController {
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UserProjection findById(@PathVariable final String id) {
         return iUserService.findProjectionById(id);
+    }
+    
+    @GetMapping(value = "/current", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public String currentUser(@AuthenticationPrincipal Authentication authentication) {
+        return authentication.getName();
     }
 
     @PatchMapping(value = "/enabled/{id}/{enabled}")

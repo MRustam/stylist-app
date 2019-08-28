@@ -1,15 +1,19 @@
 package live.evsianna.stylist.cunfig;
 
+import live.evsianna.stylist.auth.JwtAuthenticationFilter;
+import live.evsianna.stylist.auth.JwtAuthorizationFilter;
 import live.evsianna.stylist.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -35,11 +39,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable();
+                .cors().and().csrf().disable();
+
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+
         http
                 .authorizeRequests()
-                .anyRequest()
-                .permitAll();
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
+                .antMatchers("/api/user/**").hasRole("ADMIN")
+                .anyRequest().authenticated()
+                .and()
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
     }
 
     @Bean

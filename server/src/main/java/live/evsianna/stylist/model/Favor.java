@@ -51,6 +51,9 @@ public class Favor {
     @Column(name = "popularity")
     private Integer popularity;
 
+    @Column(name = "is_on_sale")
+    private Boolean isOnSale;
+
     @Column(name = "created")
     @CreationTimestamp
     private LocalDateTime created;
