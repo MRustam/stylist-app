@@ -42,7 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .cors().and().csrf().disable();
 
         http
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.NEVER);
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http
                 .authorizeRequests()
