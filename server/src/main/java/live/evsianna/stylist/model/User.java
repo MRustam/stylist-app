@@ -42,7 +42,7 @@ import java.util.Set;
 @Data
 @Table(name = "app_user")
 @Entity
-@ToString(exclude = "roles")
+@ToString(exclude = {"roles", "favors"})
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"email", "firstName", "lastName"}, callSuper = false)
 @JsonIgnoreProperties(ignoreUnknown = true)

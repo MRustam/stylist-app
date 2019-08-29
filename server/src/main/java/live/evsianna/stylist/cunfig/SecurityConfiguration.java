@@ -1,5 +1,7 @@
 package live.evsianna.stylist.cunfig;
 
+import live.evsianna.stylist.auth.JwtAuthenticationFilter;
+import live.evsianna.stylist.auth.JwtAuthorizationFilter;
 import live.evsianna.stylist.service.interfaces.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
@@ -11,6 +13,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.cors.CorsConfiguration;
@@ -36,19 +39,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf()
-                .disable().cors()
-                    .and()
-                .httpBasic()
-                    .and()
+                .cors().and().csrf().disable();
+
+        http
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
+        http
                 .authorizeRequests()
-                .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.POST, "/login").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/favor/all").permitAll()
                 .antMatchers("/api/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()
-                .loginProcessingUrl("/api/login");
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager()));
+
     }
 
     @Bean
