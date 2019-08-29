@@ -13,9 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +37,7 @@ public class UserController {
         return iUserService.findAll(true, page, size);
     }
 
-    @GetMapping(value = "/by-id/{id}",
+    @GetMapping(value = "/find/{id}",
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public UserProjection findById(@PathVariable final String id) {
         return iUserService.findProjectionById(id);
@@ -48,19 +48,18 @@ public class UserController {
         return authentication.getName();
     }
 
-    @PatchMapping(value = "/enabled/{id}/{enabled}")
-    public void setEnabledById(@PathVariable final String id,
-                               @PathVariable boolean enabled) {
-        iUserService.setIsEnabledById(enabled, id);
+    @PutMapping(value = "/{id}/disable")
+    public void setEnabledById(@PathVariable final String id) {
+        iUserService.setIsEnabledById(false, id);
     }
 
-    @PostMapping(value = "/save/simple", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity saveNewUser(@RequestBody @NotNull @Valid final User user) {
         iUserService.saveSimple(user);
         return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/save",
+    @PostMapping(value = "/register-with-order",
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public ResponseEntity<UserFavorDTO> saveNewUserWithFavor(@RequestBody @NotNull @Valid final UserFavorDTO dto) {

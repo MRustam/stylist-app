@@ -20,10 +20,7 @@ class UserList extends Component {
 
     // Fetch all users
     fetchUsers = () => {
-        const jwt = sessionStorage.getItem('jwt')
-        api.get('/user/all?page=' + this.state.page + '&size=' + this.state.size,
-            {headers: {'Authorization': jwt}}
-        )
+        api.get('/user/all?page=' + this.state.page + '&size=' + this.state.size)
             .then(response => {
                 this.setState({
                     users: response.data.content
@@ -50,10 +47,7 @@ class UserList extends Component {
 
     // Add new User
     addUser = (user) => {
-        const jwt = sessionStorage.getItem('jwt')
-        api.post('/user/save/simple', user,
-            {headers: {'Authorization': jwt}}
-        )
+        api.post('/user/register', user)
             .then(res => {
                 toast.success("Пользователь создан.", {
                     position: toast.POSITION.TOP_RIGHT
@@ -69,10 +63,7 @@ class UserList extends Component {
 
     // Disable user
     onDelClick = (id) => {
-        const jwt = sessionStorage.getItem('jwt')
-        api.patch('/user/enabled/' + id + '/false',
-            {headers: {'Authorization': jwt}}
-        )
+        api.put('/user/' + id + '/disable')
             .then(res => {
                 toast.success("Пользователь удален.", {
                     position: toast.POSITION.TOP_RIGHT

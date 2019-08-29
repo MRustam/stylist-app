@@ -7,6 +7,7 @@ server/gradle/
 server/gradlew
 server/gradlew.bat
 server/out/
+photos/
 
 ### STS ###
 .apt_generated

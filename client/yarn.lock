@@ -5774,7 +5774,7 @@ jest@24.8.0:
     import-local "^2.0.0"
     jest-cli "^24.8.0"
 
-jquery@x.*:
+jquery@^3.4.1, jquery@x.*:
   version "3.4.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.4.1.tgz#714f1f8d9dde4bdfa55764ba37ef214630d80ef2"
   integrity sha512-36+AdBzCL+y6qjw5Tx7HgzeGCzC81MDDgaUP8ld2zhx58HdqXGoBd+tHdrBMiyjGQs0Hxs/MLZTu/eHNJJuWPw==
@@ -8990,6 +8990,11 @@ semantic-ui-css@^2.4.1:
   integrity sha512-Pkp0p9oWOxlH0kODx7qFpIRYpK1T4WJOO4lNnpNPOoWKCrYsfHqYSKgk5fHfQtnWnsAKy7nLJMW02bgDWWFZFg==
   dependencies:
     jquery x.*
+
+semantic-ui-react-input-file@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/semantic-ui-react-input-file/-/semantic-ui-react-input-file-1.0.3.tgz#016803d4377cf888cdf052290ecc4cce8ceed4ee"
+  integrity sha512-DqXkVCNz0hWgJCiAO+k2LdO1HyJUVwTCH29tCXMoJfw0yu8EXJ98QBDp3RR4zt5Xi5Z4tA+j3TGaqs7wujztVQ==
 
 semantic-ui-react@^0.87.3:
   version "0.87.3"
