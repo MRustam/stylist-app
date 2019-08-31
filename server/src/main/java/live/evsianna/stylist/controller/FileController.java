@@ -1,7 +1,7 @@
 package live.evsianna.stylist.controller;
 
 import live.evsianna.stylist.model.dto.UploadFileResponse;
-import live.evsianna.stylist.service.FileStorageService;
+import live.evsianna.stylist.service.FileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
@@ -15,13 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Rustam Mamedov
@@ -33,36 +30,17 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final FileStorageService fileStorageService;
+    private final FileService fileService;
 
-    @PostMapping("/upload-file")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-
-        final String fileName = fileStorageService.storeFile(file);
-
-        final String fileDownloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
-                .path("/api/file/download-file/")
-                .path(fileName)
-                .toUriString();
-
-        return UploadFileResponse.builder()
-                .fileName(fileName)
-                .fileDownloadUri(fileDownloadUri)
-                .fileType(file.getContentType()).size(file.getSize())
-                .build();
-    }
-
-    @PostMapping("/upload-multiple-files")
+    @PostMapping("/upload-files")
     public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") final MultipartFile[] files) {
-        return Arrays.stream(files)
-                .map(this::uploadFile)
-                .collect(Collectors.toList());
+        return fileService.uploadFiles(files);
     }
 
     @GetMapping("/download-file/{fileName:.+}")
     public ResponseEntity<Resource> downloadFile(@PathVariable String fileName, HttpServletRequest request) {
 
-        final Resource resource = fileStorageService.loadFileAsResource(fileName);
+        final Resource resource = fileService.loadFileAsResource(fileName);
 
         String contentType = null;
 

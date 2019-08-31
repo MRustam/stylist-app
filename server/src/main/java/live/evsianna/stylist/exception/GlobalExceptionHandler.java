@@ -29,6 +29,16 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(entityErrorResponse, HttpStatus.NOT_FOUND);
     }
 
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<EntityErrorResponse> handleOtherExceptions(final Exception e) {
+        final EntityErrorResponse entityErrorResponse = new EntityErrorResponse<>();
+        entityErrorResponse.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
+        entityErrorResponse.setMessage(e.getMessage());
+        entityErrorResponse.setCreated(LocalDateTime.now());
+        return new ResponseEntity<>(entityErrorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(UserNotCreatedException.class)
     public ResponseEntity<EntityErrorResponse<User>> handleUserNotCreated(final UserNotCreatedException e) {
