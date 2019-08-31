@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 9090
 
 file:
   upload-dir: ${HOME}/projects/stylist/photos
@@ -49,16 +49,16 @@ spring:
   datasource:
     initialization-mode: always
 
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:~/test
-#    username: test
-#    password: test
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:~/test
+    username: test
+    password: test
 
-    platform: postges
-    username: stylist_admin
-    password: 123qwe
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/stylist_db
+#    platform: postges
+#    username: stylist_admin
+#    password: 123qwe
+#    driverClassName: org.postgresql.Driver
+#    url: jdbc:postgresql://localhost:5432/stylist_db
 
 
 
