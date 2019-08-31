@@ -19,7 +19,6 @@ plugins {
 apply plugin: 'io.spring.dependency-management'
 
 group = 'live.evsianna.stylist'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.9'
 
 configurations {
